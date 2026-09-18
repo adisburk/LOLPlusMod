@@ -1,6 +1,5 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include <Geode/modify/EditGarageLayer.hpp>
 #include <Geode/modify/LevelBrowserLayer.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 
@@ -145,28 +144,6 @@ class $modify(MyMenuLayer, MenuLayer) {
                 bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
                 auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
                 auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyMenuLayer::onLolClick));
-                myButton->setID("lol-button"_spr);
-                targetMenu->addChild(myButton);
-                targetMenu->updateLayout();
-            }
-        }
-        return true;
-    }
-    void onLolClick(CCObject* s) {
-        auto p = MyCustomPopup::create();
-        if (p) p->show();
-    }
-};
-
-class $modify(MyGarageLayer, EditGarageLayer) {
-    bool init() {
-        if (!EditGarageLayer::init()) return false;
-
-        if (auto targetMenu = this->getChildByIDContainer("back-menu")) {
-            if (!targetMenu->getChildByID("lol-button"_spr)) {
-                bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
-                auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
-                auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyGarageLayer::onLolClick));
                 myButton->setID("lol-button"_spr);
                 targetMenu->addChild(myButton);
                 targetMenu->updateLayout();
