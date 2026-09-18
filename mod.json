@@ -1,0 +1,22 @@
+{
+	"geode": "5.10.1",
+	"gd": {
+		"win": "2.2081",
+		"android": "2.2081",
+		"mac": "2.2081",
+		"ios": "2.2081"
+	},
+	"id": "adisburk.lololplus",
+	"name": "Plus+",
+	"version": "1.0.0",
+	"developer": "adisburk",
+	"description": "Adds a funny button to the main menu.",
+	"dependencies": {
+		"geode.node-ids": ">=v1.23.3"
+	},
+	"resources": {
+		"sprites": [
+			"resources/*.png"
+		]
+	}
+}
