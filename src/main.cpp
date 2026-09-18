@@ -137,16 +137,17 @@ public:
 };
 
 void addCustomButton(CCNode* layer, CCObject* target, SEL_MenuHandler selector, const char* menuID) {
-    bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
-    
-    auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
-    auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, target, selector);
-    myButton->setID("lol-button"_spr);
+    if (!layer->getChildByID("lol-button"_spr)) {
+        bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
+        auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
+        auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, target, selector);
+        myButton->setID("lol-button"_spr);
 
-    auto targetMenu = layer->getChildByID(menuID);
-    if (targetMenu) {
-        targetMenu->addChild(myButton);
-        targetMenu->updateLayout();
+        auto targetMenu = layer->getChildByID(menuID);
+        if (targetMenu) {
+            targetMenu->addChild(myButton);
+            targetMenu->updateLayout();
+        }
     }
 }
 
@@ -175,10 +176,9 @@ class $modify(MyGarageLayer, GarageLayer) {
 };
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
-    bool init(GJSearchObject* obj) {
-        if (!LevelBrowserLayer::init(obj)) return false;
+    void setupLevelBrowser(CCArray* p0) {
+        LevelBrowserLayer::setupLevelBrowser(p0);
         addCustomButton(this, this, menu_selector(MyLevelBrowserLayer::onLolClick), "back-menu");
-        return true;
     }
     void onLolClick(CCObject* s) {
         auto p = MyCustomPopup::create();
