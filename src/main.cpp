@@ -139,14 +139,17 @@ class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
         
-        if (auto targetMenu = this->getChildByIDContainer("bottom-menu")) {
-            if (!targetMenu->getChildByID("lol-button"_spr)) {
+        if (auto node = this->getChildByID("bottom-menu")) {
+            if (!node->getChildByID("lol-button"_spr)) {
                 bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
                 auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
                 auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyMenuLayer::onLolClick));
                 myButton->setID("lol-button"_spr);
-                targetMenu->addChild(myButton);
-                targetMenu->updateLayout();
+                node->addChild(myButton);
+                
+                if (auto targetMenu = typeinfo_cast<CCMenu*>(node)) {
+                    targetMenu->updateLayout();
+                }
             }
         }
         return true;
@@ -161,14 +164,17 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
     bool init(GJSearchObject* p0) {
         if (!LevelBrowserLayer::init(p0)) return false;
 
-        if (auto targetMenu = this->getChildByIDContainer("back-menu")) {
-            if (!targetMenu->getChildByID("lol-button"_spr)) {
+        if (auto node = this->getChildByID("back-menu")) {
+            if (!node->getChildByID("lol-button"_spr)) {
                 bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
                 auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
                 auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyLevelBrowserLayer::onLolClick));
                 myButton->setID("lol-button"_spr);
-                targetMenu->addChild(myButton);
-                targetMenu->updateLayout();
+                node->addChild(myButton);
+                
+                if (auto targetMenu = typeinfo_cast<CCMenu*>(node)) {
+                    targetMenu->updateLayout();
+                }
             }
         }
         return true;
@@ -180,20 +186,22 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
 };
 
 class $modify(MyPauseLayer, PauseLayer) {
-    bool init() {
-        if (!PauseLayer::init()) return false;
+    void customSetup() {
+        PauseLayer::customSetup();
 
-        if (auto targetMenu = this->getChildByIDContainer("bottom-menu")) {
-            if (!targetMenu->getChildByID("lol-button"_spr)) {
+        if (auto node = this->getChildByID("bottom-menu")) {
+            if (!node->getChildByID("lol-button"_spr)) {
                 bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
                 auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
                 auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyPauseLayer::onLolClick));
                 myButton->setID("lol-button"_spr);
-                targetMenu->addChild(myButton);
-                targetMenu->updateLayout();
+                node->addChild(myButton);
+                
+                if (auto targetMenu = typeinfo_cast<CCMenu*>(node)) {
+                    targetMenu->updateLayout();
+                }
             }
         }
-        return true;
     }
     void onLolClick(CCObject* s) {
         auto p = MyCustomPopup::create();
