@@ -73,7 +73,7 @@ public:
     bool init() {
         if (!FLAlertLayer::init(150)) return false;
 
-        auto background = CCScale9Sprite::create("GJ_square02.png");
+        auto background = CCScale9Sprite::create("GJ_square01.png");
         background->setContentSize({ 300, 240 });
         auto winSize = CCDirector::sharedDirector()->getWinSize();
         background->setPosition(winSize / 2);
@@ -84,25 +84,36 @@ public:
         label->setPosition(winSize / 2 + CCPoint{0, 85});
         m_mainLayer->addChild(label);
 
-        // 1. Создаем круглую зеленую кнопку-рамку с черной обводкой для фото
-        auto frameSprite = ButtonSprite::create("", 0, false, "bigFont.fnt", "GJ_button_01.png", 60.0f, 1.0f);
+        auto containerNode = CCNode::create();
+        containerNode->setContentSize({ 80, 60 });
+
+        auto drawNode = CCDrawNode::create();
+        ccColor4F fillColor = {1.0f, 1.0f, 1.0f, 1.0f};
+        ccColor4F borderColor = {0.0f, 0.0f, 0.0f, 1.0f};
         
-        // 2. Накладываем твою пиксельную фотку ровно по центру этой круглой рамки
+        drawNode->drawRoundRect(
+            {0, 0}, 
+            {80, 60}, 
+            6.0f, 
+            borderColor, 
+            fillColor
+        );
+        containerNode->addChild(drawNode);
+
         auto photo = CCSprite::create("my_photo.png"_spr);
         if (photo) {
             photo->getTexture()->setAliasTexParameters();
-            photo->setScale(35.0f / photo->getContentSize().width);
-            photo->setPosition(frameSprite->getContentSize() / 2);
-            frameSprite->addChild(photo);
+            photo->setScale(50.0f / photo->getContentSize().width);
+            photo->setPosition(containerNode->getContentSize() / 2);
+            containerNode->addChild(photo);
         }
 
-        // 3. Делаем всю эту круглую конструкцию кликабельной кнопкой-секреткой
         auto photoButton = CCMenuItemSpriteExtra::create(
-            frameSprite, this, menu_selector(MyCustomPopup::onPhotoClick)
+            containerNode, this, menu_selector(MyCustomPopup::onPhotoClick)
         );
         auto photoMenu = CCMenu::create();
         photoMenu->addChild(photoButton);
-        photoMenu->setPosition(winSize / 2 + CCPoint{0, 15});
+        photoMenu->setPosition(winSize / 2 + CCPoint{-40, -15});
         m_mainLayer->addChild(photoMenu);
 
         auto okButtonSprite = ButtonSprite::create("OK");
@@ -148,23 +159,27 @@ void injectStyledButton(CCNode* layer, CCObject* target, SEL_MenuHandler selecto
         if (!targetMenuNode->getChildByID("lol-button"_spr)) {
             bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
             
-            // Возвращаем ту самую ЗЕЛЕНУЮ КВАДРАТНУЮ кнопку, которая была до этого
-            auto customSprite = CCScale9Sprite::create("GJ_square01.png");
-            customSprite->setContentSize({ 45, 30 });
+            auto buttonSprite = CircleButtonSprite::createWithSpriteFrameName(
+                "GJ_blankBtn_001.png",
+                0.95f,
+                CircleBaseColor::Green,
+                CircleBaseSize::Medium
+            );
             
-            auto textLabel = CCLabelBMFont::create(isSecret ? "OLO" : "LOL", "bigFont.fnt");
-            textLabel->setScale(0.4f);
-            textLabel->setPosition(customSprite->getContentSize() / 2);
-            customSprite->addChild(textLabel);
-            
-            auto myButton = CCMenuItemSpriteExtra::create(customSprite, target, selector);
-            myButton->setID("lol-button"_spr);
-            
-            targetMenuNode->addChild(myButton);
-            
-            auto menuCast = typeinfo_cast<CCMenu*>(targetMenuNode);
-            if (menuCast) {
-                menuCast->updateLayout();
+            if (buttonSprite) {
+                auto textLabel = CCLabelBMFont::create(isSecret ? "OLO" : "LOL", "bigFont.fnt");
+                textLabel->setScale(0.35f);
+                textLabel->setPosition(buttonSprite->getContentSize() / 2);
+                buttonSprite->addChild(textLabel);
+                
+                auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, target, selector);
+                myButton->setID("lol-button"_spr);
+                targetMenuNode->addChild(myButton);
+                
+                auto menuCast = typeinfo_cast<CCMenu*>(targetMenuNode);
+                if (menuCast) {
+                    menuCast->updateLayout();
+                }
             }
         }
     }
