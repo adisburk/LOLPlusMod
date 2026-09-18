@@ -176,9 +176,10 @@ class $modify(MyGarageLayer, GarageLayer) {
 };
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
-    void enterAnimLayer() {
-        LevelBrowserLayer::enterAnimLayer();
+    bool init(GJSearchObject* p0) {
+        if (!LevelBrowserLayer::init(p0)) return false;
         addCustomButton(this, this, menu_selector(MyLevelBrowserLayer::onLolClick), "back-menu");
+        return true;
     }
     void onLolClick(CCObject* s) {
         auto p = MyCustomPopup::create();
