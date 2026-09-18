@@ -18,5 +18,13 @@
 		"sprites": [
 			"resources/*.png"
 		]
+	},
+	"settings": {
+		"secret-active": {
+			"name": "Secret Active",
+			"type": "bool",
+			"default": false,
+			"hidden": true
+		}
 	}
 }
