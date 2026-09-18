@@ -84,25 +84,26 @@ public:
         label->setPosition(winSize / 2 + CCPoint{0, 85});
         m_mainLayer->addChild(label);
 
-        auto frame = CCScale9Sprite::create("square02b_001.png");
-        frame->setContentSize({ 140, 110 });
-        frame->setPosition(winSize / 2 + CCPoint{0, 15});
-        m_mainLayer->addChild(frame);
-
+        // 1. Создаем круглую зеленую кнопку-рамку с черной обводкой для фото
+        auto frameSprite = ButtonSprite::create("", 0, false, "bigFont.fnt", "GJ_button_01.png", 60.0f, 1.0f);
+        
+        // 2. Накладываем твою пиксельную фотку ровно по центру этой круглой рамки
         auto photo = CCSprite::create("my_photo.png"_spr);
         if (photo) {
             photo->getTexture()->setAliasTexParameters();
-            photo->setScale(120.0f / photo->getContentSize().width);
-            photo->setPosition(frame->getContentSize() / 2);
-            
-            auto photoButton = CCMenuItemSpriteExtra::create(
-                photo, this, menu_selector(MyCustomPopup::onPhotoClick)
-            );
-            auto photoMenu = CCMenu::create();
-            photoMenu->addChild(photoButton);
-            photoMenu->setPosition(winSize / 2 + CCPoint{0, 15});
-            m_mainLayer->addChild(photoMenu);
+            photo->setScale(35.0f / photo->getContentSize().width);
+            photo->setPosition(frameSprite->getContentSize() / 2);
+            frameSprite->addChild(photo);
         }
+
+        // 3. Делаем всю эту круглую конструкцию кликабельной кнопкой-секреткой
+        auto photoButton = CCMenuItemSpriteExtra::create(
+            frameSprite, this, menu_selector(MyCustomPopup::onPhotoClick)
+        );
+        auto photoMenu = CCMenu::create();
+        photoMenu->addChild(photoButton);
+        photoMenu->setPosition(winSize / 2 + CCPoint{0, 15});
+        m_mainLayer->addChild(photoMenu);
 
         auto okButtonSprite = ButtonSprite::create("OK");
         auto okButton = CCMenuItemSpriteExtra::create(
@@ -147,6 +148,7 @@ void injectStyledButton(CCNode* layer, CCObject* target, SEL_MenuHandler selecto
         if (!targetMenuNode->getChildByID("lol-button"_spr)) {
             bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
             
+            // Возвращаем ту самую ЗЕЛЕНУЮ КВАДРАТНУЮ кнопку, которая была до этого
             auto customSprite = CCScale9Sprite::create("GJ_square01.png");
             customSprite->setContentSize({ 45, 30 });
             
