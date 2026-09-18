@@ -136,25 +136,20 @@ public:
     }
 };
 
-void addCustomButton(CCNode* layer, CCObject* target, SEL_MenuHandler selector, const char* menuID) {
-    if (layer && !layer->getChildByID("lol-button"_spr)) {
-        bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
-        auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
-        auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, target, selector);
-        myButton->setID("lol-button"_spr);
-
-        auto targetMenu = layer->getChildByID(menuID);
-        if (targetMenu) {
-            targetMenu->addChild(myButton);
-            targetMenu->updateLayout();
-        }
-    }
-}
-
 class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
         if (!MenuLayer::init()) return false;
-        addCustomButton(this, this, menu_selector(MyMenuLayer::onLolClick), "bottom-menu");
+        
+        bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
+        auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
+        auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyMenuLayer::onLolClick));
+        myButton->setID("lol-button"_spr);
+
+        if (auto targetMenu = this->getChildByID("bottom-menu")) {
+            targetMenu->addChild(myButton);
+            auto menuCast = typeinfo_cast<CCMenu*>(targetMenu);
+            if (menuCast) menuCast->updateLayout();
+        }
         return true;
     }
     void onLolClick(CCObject* s) {
@@ -166,7 +161,17 @@ class $modify(MyMenuLayer, MenuLayer) {
 class $modify(MyGarageLayer, GarageLayer) {
     bool init() {
         if (!GarageLayer::init()) return false;
-        addCustomButton(this, this, menu_selector(MyGarageLayer::onLolClick), "back-menu");
+
+        bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
+        auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
+        auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyGarageLayer::onLolClick));
+        myButton->setID("lol-button"_spr);
+
+        if (auto targetMenu = this->getChildByID("back-menu")) {
+            targetMenu->addChild(myButton);
+            auto menuCast = typeinfo_cast<CCMenu*>(targetMenu);
+            if (menuCast) menuCast->updateLayout();
+        }
         return true;
     }
     void onLolClick(CCObject* s) {
@@ -178,7 +183,17 @@ class $modify(MyGarageLayer, GarageLayer) {
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
     bool init(GJSearchObject* p0) {
         if (!LevelBrowserLayer::init(p0)) return false;
-        addCustomButton(this, this, menu_selector(MyLevelBrowserLayer::onLolClick), "back-menu");
+
+        bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
+        auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
+        auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyLevelBrowserLayer::onLolClick));
+        myButton->setID("lol-button"_spr);
+
+        if (auto targetMenu = this->getChildByID("back-menu")) {
+            targetMenu->addChild(myButton);
+            auto menuCast = typeinfo_cast<CCMenu*>(targetMenu);
+            if (menuCast) menuCast->updateLayout();
+        }
         return true;
     }
     void onLolClick(CCObject* s) {
@@ -190,7 +205,17 @@ class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
 class $modify(MyPauseLayer, PauseLayer) {
     bool init() {
         if (!PauseLayer::init()) return false;
-        addCustomButton(this, this, menu_selector(MyPauseLayer::onLolClick), "bottom-menu");
+
+        bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
+        auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
+        auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, this, menu_selector(MyPauseLayer::onLolClick));
+        myButton->setID("lol-button"_spr);
+
+        if (auto targetMenu = this->getChildByID("bottom-menu")) {
+            targetMenu->addChild(myButton);
+            auto menuCast = typeinfo_cast<CCMenu*>(targetMenu);
+            if (menuCast) menuCast->updateLayout();
+        }
         return true;
     }
     void onLolClick(CCObject* s) {
