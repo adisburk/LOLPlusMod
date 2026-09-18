@@ -1,37 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include <Geode/utils/cocos.hpp>
-#include <Geode/ui/Popup.hpp>
 
 using namespace geode::prelude;
-
-class MyCustomPopup : public geode::Popup<> {
-protected:
-    bool setup() override {
-        this->setTitle("OLO");
-
-        auto photo = CCSprite::create("my_photo.png"_spr);
-        if (photo) {
-            photo->getTexture()->setAliasTexParameters();
-            photo->setScale(95.0f / photo->getContentSize().width);
-            photo->setPosition(m_mainLayer->getContentSize() / 2 + CCPoint{0, 10});
-            m_mainLayer->addChild(photo);
-        }
-
-        return true;
-    }
-
-public:
-    static MyCustomPopup* create() {
-        auto ret = new MyCustomPopup();
-        if (ret && ret->initAnchored(300, 220)) {
-            ret->autorelease();
-            return ret;
-        }
-        CC_SAFE_DELETE(ret);
-        return nullptr;
-    }
-};
 
 class $modify(MyMenuLayer, MenuLayer) {
     bool init() {
@@ -56,9 +26,21 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 
     void onLolButtonClick(CCObject* sender) {
-        auto popup = MyCustomPopup::create();
-        if (popup) {
-            popup->show();
+        auto alert = FLAlertLayer::create(nullptr, "OLO", "OK", nullptr, 300, false, 220, 1.0f);
+        alert->show();
+
+        auto mainLayer = alert->m_mainLayer;
+        if (mainLayer) {
+            auto photo = CCSprite::create("my_photo.png"_spr);
+            if (photo) {
+                photo->getTexture()->setAliasTexParameters();
+                photo->setScale(95.0f / photo->getContentSize().width);
+                
+                auto winSize = CCDirector::sharedDirector()->getWinSize();
+                photo->setPosition(winSize / 2 + CCPoint{0, 15});
+                
+                mainLayer->addChild(photo);
+            }
         }
     }
 };
