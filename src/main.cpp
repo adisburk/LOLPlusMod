@@ -1,6 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
-#include <Geode/modify/GarageLayer.hpp>
+#include <Geode/modify/EditGarageLayer.hpp>
 #include <Geode/modify/LevelBrowserLayer.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 
@@ -158,9 +158,9 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 };
 
-class $modify(MyGarageLayer, GarageLayer) {
+class $modify(MyGarageLayer, EditGarageLayer) {
     bool init() {
-        if (!GarageLayer::init()) return false;
+        if (!EditGarageLayer::init()) return false;
 
         if (auto targetMenu = this->getChildByIDContainer("back-menu")) {
             if (!targetMenu->getChildByID("lol-button"_spr)) {
