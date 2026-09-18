@@ -1,5 +1,7 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/MenuLayer.hpp>
+#include <Geode/utils/cocos.hpp>
+#include <Geode/ui/Popup.hpp>
 
 using namespace geode::prelude;
 
