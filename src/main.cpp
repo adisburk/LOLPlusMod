@@ -26,7 +26,7 @@ class $modify(MyMenuLayer, MenuLayer) {
     }
 
     void onLolButtonClick(CCObject* sender) {
-        auto alert = FLAlertLayer::create(nullptr, "OLO", "OK", nullptr, 300, false, 220, 1.0f);
+        auto alert = FLAlertLayer::create("OLO", " ", "OK");
         alert->show();
 
         auto mainLayer = alert->m_mainLayer;
@@ -39,7 +39,7 @@ class $modify(MyMenuLayer, MenuLayer) {
                 auto winSize = CCDirector::sharedDirector()->getWinSize();
                 photo->setPosition(winSize / 2 + CCPoint{0, 15});
                 
-                mainLayer->addChild(photo);
+                mainLayer->addChild(photo, 100);
             }
         }
     }
