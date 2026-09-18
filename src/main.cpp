@@ -137,7 +137,7 @@ public:
 };
 
 void addCustomButton(CCNode* layer, CCObject* target, SEL_MenuHandler selector, const char* menuID) {
-    if (!layer->getChildByID("lol-button"_spr)) {
+    if (layer && !layer->getChildByID("lol-button"_spr)) {
         bool isSecret = Mod::get()->getSettingValue<bool>("secret-active");
         auto buttonSprite = ButtonSprite::create(isSecret ? "OLO" : "LOL");
         auto myButton = CCMenuItemSpriteExtra::create(buttonSprite, target, selector);
@@ -176,8 +176,8 @@ class $modify(MyGarageLayer, GarageLayer) {
 };
 
 class $modify(MyLevelBrowserLayer, LevelBrowserLayer) {
-    void setupLevelBrowser(CCArray* p0) {
-        LevelBrowserLayer::setupLevelBrowser(p0);
+    void enterAnimLayer() {
+        LevelBrowserLayer::enterAnimLayer();
         addCustomButton(this, this, menu_selector(MyLevelBrowserLayer::onLolClick), "back-menu");
     }
     void onLolClick(CCObject* s) {
